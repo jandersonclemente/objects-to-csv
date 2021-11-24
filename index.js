@@ -10,8 +10,9 @@ class ObjectsToCsv {
   /**
    * Creates a new instance of the object array to csv converter.
    * @param {object[]} objectArray
+   * @param {object} writeOptions //currently used to pass the delimiter by parameter (default : ',')
    */
-  constructor(objectArray) {
+  constructor(objectArray, writeOptions = null) {
     if (!Array.isArray(objectArray)) {
       throw new Error('The input to objects-to-csv must be an array of objects.');
     }
@@ -22,6 +23,12 @@ class ObjectsToCsv {
       }
     }
 
+    let _delimiter = ','
+    if(writeOptions && writeOptions.delimiter){
+      _delimiter = writeOptions.delimiter
+    }
+
+    this.delimiter = _delimiter
     this.data = objectArray;
   }
 
@@ -93,7 +100,7 @@ class ObjectsToCsv {
    * @returns {Promise<string>}
    */
   async toString(header = true, allColumns = false) {
-    return await convert(this.data, header, allColumns);
+    return await convert(this.data, header, allColumns, this.delimiter);
   }
 }
 
@@ -105,7 +112,7 @@ class ObjectsToCsv {
  *   Uses only the first item if false.
  * @returns {string}
  */
-async function convert(data, header = true, allColumns = false) {
+async function convert(data, header = true, allColumns = false, delimiter) {
   if (data.length === 0) {
     return '';
   }
@@ -135,7 +142,7 @@ async function convert(data, header = true, allColumns = false) {
     ...data.map(row => columnNames.map(column => row[column])),
   );
 
-  return await csv.stringify(csvInput);
+  return await csv.stringify(csvInput, {delimiter : delimiter});
 }
 
 module.exports = ObjectsToCsv;

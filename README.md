@@ -1,3 +1,26 @@
+## Forked from ##
+https://github.com/anton-bot/objects-to-csv
+
+## What does this version differ from the original? ##
+
+In this version you can pass a delimiter when instanciating the module:
+
+```javascript
+const ObjectToCsv = require('objects-to-csv-delimited')
+
+const sample = [
+    {index : '0', text : 'line 1'},
+    {index : '1', text : 'line 2'},
+    {index : '2', text : 'line 3'}
+]
+
+new ObjectToCsv(sample,{
+    delimiter : ';'
+}).toDisk('./sample.csv')
+```
+
+A comma will be used as default if nothing is passed in the second parameter.
+
 # Convert array of objects into a CSV file #
 
 Converts an array of JavaScript objects into the CSV format. You can
@@ -102,4 +125,6 @@ printCsv(sampleData);
 
 ## Requirements ##
 
-Use Node.js version 8 or above.
+Use Node.js version 8 or above. 
+
+**OBS.: This modified version was tested using Node.js 14**
